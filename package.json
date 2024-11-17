@@ -1,0 +1,11 @@
+{
+  "name": "organize-me",
+  "version": "1.0.0",
+  "scripts": {
+    "start:organize-me-front": "cd organize-me-front && npm start",
+    "start:organize-me-back": "cd organize-me-back && npm start",
+    "install": "npm install --prefix organize-me-front && npm install --prefix organize-me-back",
+    "build:organize-me-front": "cd organize-me-front && npm run build",
+    "build:organize-me-back": "cd organize-me-back && npm run build"
+  }
+}

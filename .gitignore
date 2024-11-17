@@ -1,0 +1,17 @@
+# Node.js
+node_modules/
+.env
+
+# Logs
+logs/
+*.log
+
+# Build files
+/organize-me-front/build
+/organize-me-front/dist
+/organize-me-back/build
+/organize-me-back/dist
+
+# IDEs
+.vscode/
+.idea/
