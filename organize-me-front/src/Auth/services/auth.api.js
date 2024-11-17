@@ -1,5 +1,4 @@
-import ApiService from "../../common/services/apiService";
-
+import ApiService from "../../Common/services/apiService";
 const AUTH_PATH_API = "auth";
 
 class AuthApi extends ApiService {
