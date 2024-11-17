@@ -14,10 +14,9 @@ app.use(morgan('dev'));
 // Middleware pour gérer les JSON et limiter leur taille
 app.use(express.json({ limit: "50mb" }));
 
-// Définir les origines autorisées
 const allowedOrigins = [
   'http://localhost:5173', // Front-end en local
-  'https://organize-me-front.vercel.app' // Front-end déployé sur Vercel
+  'https://organize-me-front.vercel.app', // Front-end déployé sur Vercel
 ];
 
 const corsOptions = {
@@ -25,15 +24,21 @@ const corsOptions = {
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
+      console.error(`CORS Error: Origin ${origin} not allowed`);
       callback(new Error('Not allowed by CORS'));
     }
   },
-  credentials: true, // Permet d'envoyer les cookies et credentials
-  optionsSuccessStatus: 200,
+  credentials: true, // Autoriser les cookies et autres credentials
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Méthodes autorisées
+  allowedHeaders: ['Content-Type', 'Authorization'], // En-têtes autorisés
+  optionsSuccessStatus: 204, // Statut de succès pour les requêtes préflight
 };
 
 // Middleware CORS
 app.use(cors(corsOptions));
+
+// Middleware pour les requêtes préflight (OPTIONS)
+app.options('*', cors(corsOptions));
 
 // Connexion à MongoDB
 mongoose
@@ -45,13 +50,12 @@ mongoose
   .catch((err) => console.error('❌ MongoDB Connection Error:', err));
 
 // Routes
-app.use('/', router); // Toutes les routes sont regroupées sous /api
+app.use('/api', router); // Toutes les routes sont regroupées sous /api
+
+// Route principale pour tester l'API
 app.get("/", (req, res) => {
   res.send("Bienvenue sur l'API Organize Me!");
 });
-
-// Middleware pour les requêtes préflight (OPTIONS)
-app.options('*', cors(corsOptions)); // Gérer les requêtes préflight
 
 // Démarrer le serveur
 const PORT = process.env.PORT || 3000;

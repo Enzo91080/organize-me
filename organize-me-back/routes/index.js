@@ -1,14 +1,12 @@
 const express = require("express");
-const router = express();
-const morgan = require("morgan");
+const router = express.Router();
 
-
-router.use(morgan("dev"));
-
+// Importer les sous-routes
 const authRoutes = require("./auth.route");
 const taskRoutes = require('./task.route');
 
-router.use("/api/auth", authRoutes);
-router.use("/api/tasks", taskRoutes);
+// Ajout des sous-routes
+router.use("/auth", authRoutes); // Routes d'authentification
+router.use("/tasks", taskRoutes); // Routes de gestion des tâches
 
 module.exports = router;
