@@ -9,7 +9,10 @@ const app = express();
 app.use(express.json());
 
 // Définir les origines autorisées
-const allowedOrigins = ['http://localhost:5173'];
+const allowedOrigins = [
+  'http://localhost:5173', // Front-end en local
+  'https://organize-me-front.vercel.app' // Front-end déployé sur Vercel
+];
 
 const corsOptions = {
   origin: (origin, callback) => {
