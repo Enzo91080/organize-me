@@ -1,38 +1,32 @@
 import ApiService from "../../Common/services/apiService";
+const TASK_PATH_API = "api/tasks";
 
-// Instance d'ApiService pour les tâches
-const apiService = new ApiService('/tasks');
+class TaskApi extends ApiService {
+  constructor() {
+    super(TASK_PATH_API);
+  }
 
-const taskApi = {
-  // Récupérer toutes les tâches
-  getAllTasks: async (params = {}) => {
-    return await apiService.find("", params);
-  },
+  getAllTasks() {
+    return this.get("");
+  }
 
-  // Récupérer une tâche par ID
-  getTaskById: async (id) => {
-    return await apiService.get(`/${id}`);
-  },
+  getTaskById(id) {
+    return this.get(`/${id}`);
+  }
 
-  // Récupérer une tâche par ID sans token
-  getTaskByIdNoToken: async (id) => {
-    return await apiService.get(`/${id}`);
-  },
+  createTask(data) {
+    return this.post("", data);
+  }
 
-  // Créer une nouvelle tâche
-  createTask: async (data) => {
-    return await apiService.post("", data);
-  },
+  updateTask(id, data) {
+    return this.put(`/${id}`, data);
+  }
 
-  // Mettre à jour une tâche par ID
-  updateTask: async (id, data) => {
-    return await apiService.put(`/${id}`, data);
-  },
+  deleteTask(id) {
+    return this.delete(`/${id}`);
+  }
+}
 
-  // Supprimer une tâche par ID
-  deleteTask: async (id) => {
-    return await apiService.delete(`/${id}`);
-  },
-};
+const taskApi = new TaskApi();
 
 export default taskApi;
