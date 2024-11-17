@@ -39,7 +39,7 @@ mongoose
   .catch((err) => console.error(err));
 
 // Routes
-app.use('/api', router);
+app.use('/', router);
 app.get("/", (req, res) => {
   res.send("Bienvenue sur l'api!");
 });

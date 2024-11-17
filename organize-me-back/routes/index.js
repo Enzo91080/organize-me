@@ -8,7 +8,7 @@ router.use(morgan("dev"));
 const authRoutes = require("./auth.route");
 const taskRoutes = require('./task.route');
 
-router.use("/auth", authRoutes);
-router.use("/tasks", taskRoutes);
+router.use("api/auth", authRoutes);
+router.use("api/tasks", taskRoutes);
 
 module.exports = router;
