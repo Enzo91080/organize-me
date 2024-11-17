@@ -1,4 +1,4 @@
-import ApiService from "../../common/services/apiService";
+import ApiService from "../../Common/services/apiService";
 
 // Instance d'ApiService pour les tâches
 const apiService = new ApiService('/tasks');

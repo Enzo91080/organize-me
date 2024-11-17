@@ -37,7 +37,9 @@ mongoose
 
 // Routes
 app.use('/api', router);
-app.get('/', (req, res) => res.send('API Running'));
+app.get("/", (req, res) => {
+  res.send("Bienvenue sur l'api!");
+});
 
 // Middleware pour les requêtes préflight (OPTIONS)
 app.options('*', cors(corsOptions)); // Gérer les requêtes préflight
