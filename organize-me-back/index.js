@@ -25,26 +25,25 @@ app.use(
   })
 );
 
-// Test de connexion à MongoDB
+// Test MongoDB (doit être défini avant les autres routes)
+app.get("/mongodb-test", async (req, res) => {
+  try {
+    // Teste si MongoDB répond
+    const dbStatus = await mongoose.connection.db.admin().ping();
+    res.status(200).json({ message: "MongoDB fonctionne bien.", dbStatus });
+  } catch (err) {
+    console.error("Erreur MongoDB :", err);
+    res.status(500).json({ error: "MongoDB ne répond pas." });
+  }
+});
+
+// Connexion à MongoDB
 mongoose
   .connect(process.env.MONGO_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
-  .then(() => {
-    console.log("✅ MongoDB Connected");
-
-    // Route de diagnostic MongoDB (positionnée ici, avant les autres routes)
-    app.get("/mongodb-test", async (req, res) => {
-      try {
-        const dbStatus = await mongoose.connection.db.admin().ping();
-        res.status(200).json({ message: "MongoDB fonctionne bien.", dbStatus });
-      } catch (err) {
-        console.error("Erreur MongoDB :", err);
-        res.status(500).json({ error: "MongoDB ne répond pas." });
-      }
-    });
-  })
+  .then(() => console.log("✅ MongoDB Connected"))
   .catch((err) => {
     console.error("❌ MongoDB Connection Error:", err);
     process.exit(1);
@@ -52,12 +51,6 @@ mongoose
 
 // Routes principales
 app.use("/", router);
-
-
-// Route de test générale pour vérifier si le serveur est actif
-app.get("/connected", (req, res) => {
-  res.status(200).send("Bienvenue sur l'API Organize Me!");
-});
 
 // Middleware pour les erreurs
 app.use((err, req, res, next) => {
