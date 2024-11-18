@@ -1,5 +1,5 @@
 import ApiService from "../../Common/services/apiService";
-const TASK_PATH_API = "api/tasks";
+const TASK_PATH_API = "tasks";
 
 class TaskApi extends ApiService {
   constructor() {

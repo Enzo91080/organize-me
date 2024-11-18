@@ -1,5 +1,5 @@
 import ApiService from "../../Common/services/apiService";
-const AUTH_PATH_API = "api/auth";
+const AUTH_PATH_API = "auth";
 
 class AuthApi extends ApiService {
   constructor() {
