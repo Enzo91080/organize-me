@@ -126,8 +126,10 @@ export default function MainLayout() {
       </main>
 
       {/* Footer */}
-      <footer className="bg-gray-800 text-white p-4 text-center">
-        © 2024 Gestion des Tâches
+      <footer className="bg-gray-800 py-8">
+        <div className="max-w-7xl mx-auto px-4 text-center">
+          <p>&copy; 2024 Organize Me. Tous droits réservés.</p>
+        </div>
       </footer>
     </div>
   );

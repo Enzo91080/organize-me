@@ -13,7 +13,7 @@ export default function Login() {
     try {
       console.log("Tentative de connexion...");
       await login({ email, password });
-      navigate(ROUTES.HOME);
+      navigate(ROUTES.TASKS);
     } catch (err) {
       console.error("Erreur de connexion :", err.message);
     }
