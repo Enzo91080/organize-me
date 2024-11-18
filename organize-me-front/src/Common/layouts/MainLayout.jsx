@@ -26,7 +26,14 @@ export default function MainLayout() {
         <div className="container mx-auto flex items-center justify-between py-4 px-6">
           {/* Logo */}
           <Link to="/" className="text-xl font-bold hover:text-gray-300">
-            Gestion des Tâches
+          <img src="../../../public/organize-me-light.png" alt="" className="
+              h-8 w-8
+              inline-block 
+              mr-2
+
+          " />
+              {/* icon */}
+            OrganizeMe
           </Link>
 
           {/* Navigation Menu */}
