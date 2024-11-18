@@ -44,20 +44,38 @@ router.get("/me", async (req, res) => {
 
 // Connexion
 router.post("/login", async (req, res) => {
+  console.log("Requête reçue pour /login avec email :", req.body.email);
+
   const { email, password } = req.body;
   try {
+    console.log("Recherche de l'utilisateur...");
     const user = await User.findOne({ email });
-    if (!user || !(await user.comparePassword(password))) {
+
+    if (!user) {
+      console.log("Utilisateur non trouvé.");
       return res.status(401).json({ message: "Invalid credentials" });
     }
+
+    console.log("Vérification du mot de passe...");
+    const isMatch = await user.comparePassword(password);
+    if (!isMatch) {
+      console.log("Mot de passe incorrect.");
+      return res.status(401).json({ message: "Invalid credentials" });
+    }
+
+    console.log("Génération du token JWT...");
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
       expiresIn: "1h",
     });
+
+    console.log("Réponse avec succès.");
     res.json({ token, user, accessToken: token, refreshToken: token });
   } catch (err) {
+    console.error("Erreur pendant le processus de connexion :", err.message);
     res.status(500).json({ error: err.message });
   }
 });
+
 
 
 module.exports = router;
