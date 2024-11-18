@@ -34,7 +34,7 @@ mongoose
   .then(() => {
     console.log("✅ MongoDB Connected");
 
-    // Route de diagnostic pour MongoDB
+    // Route de diagnostic MongoDB (positionnée ici, avant les autres routes)
     app.get("/mongodb-test", async (req, res) => {
       try {
         const dbStatus = await mongoose.connection.db.admin().ping();
@@ -50,8 +50,9 @@ mongoose
     process.exit(1);
   });
 
-// Routes principales sans préfixe `/api`
+// Routes principales
 app.use("/", router);
+
 
 // Route de test générale pour vérifier si le serveur est actif
 app.get("/connected", (req, res) => {
