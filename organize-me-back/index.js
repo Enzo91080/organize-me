@@ -52,8 +52,13 @@ mongoose
 app.use('/', router);
 
 // Route principale pour tester l'API
-app.get("/", (req, res) => {
+app.get("/welcome", (req, res) => {
   res.send("Bienvenue sur l'API Organize Me!");
+});
+
+// Redirection par défaut vers /welcome
+app.get("/", (req, res) => {
+  res.redirect("/welcome");
 });
 
 // Démarrer le serveur
