@@ -2,6 +2,7 @@ import { Outlet, Link, useNavigate } from "react-router-dom";
 import { useContext, useState } from "react";
 import AuthContext from "../contexts/AuthContext";
 import { useEffect } from "react";
+import lightLogo from "../../assets/organize-me-light.png";
 
 export default function MainLayout() {
   const { user, logout } = useContext(AuthContext); // Utilisation du contexte pour vérifier l'état de connexion
@@ -18,7 +19,7 @@ export default function MainLayout() {
   useEffect(() => {
     console.log("User in MainLayout after login:", user);
   }, [user]);
-  
+
   return (
     <div>
       {/* Header */}
@@ -26,13 +27,15 @@ export default function MainLayout() {
         <div className="container mx-auto flex items-center justify-between py-4 px-6">
           {/* Logo */}
           <Link to="/" className="text-xl font-bold hover:text-gray-300">
-          <img src="../../../public/organize-me-light.png" alt="" className="
-              h-8 w-8
-              inline-block 
-              mr-2
-
-          " />
-              {/* icon */}
+            <img
+              src={lightLogo}
+              className="
+              w-8 
+              h-8
+              inline-block mr-2
+            "
+            />
+            {/* icon */}
             OrganizeMe
           </Link>
 
