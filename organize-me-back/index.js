@@ -15,27 +15,17 @@ app.use(morgan('dev'));
 app.use(express.json({ limit: "50mb" }));
 
 // Définir les origines autorisées
-const allowedOrigins = [
-  'http://localhost:5173', // Front-end en local
-  'https://organize-me-front.vercel.app', // Front-end déployé sur Vercel
-];
-
 const corsOptions = {
   origin: (origin, callback) => {
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      console.error(`CORS Error: Origin ${origin} not allowed`);
-      callback(new Error('Not allowed by CORS'));
-    }
+    console.log(`Request origin: ${origin}`);
+    callback(null, true); // Autorisez tout pour vérifier si CORS est bien configuré
   },
-  credentials: true, // Permet d'envoyer les cookies et credentials
-  optionsSuccessStatus: 200,
+  credentials: true,
 };
 
-// Middleware CORS
-app.use(cors(corsOptions));
 
+// Appliquer le middleware CORS
+app.use(cors(corsOptions));
 // Middleware pour les requêtes préflight (OPTIONS)
 app.options('*', cors(corsOptions)); // Gérer les requêtes préflight
 
