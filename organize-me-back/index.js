@@ -4,6 +4,9 @@ require('dotenv').config();
 const cors = require('cors');
 const morgan = require('morgan');
 const router = require("./routes");
+const { MongoClient } = require("mongodb");
+const uri = process.env.MONGO_URI;
+
 
 // Initialisation de l'application
 const app = express();
@@ -38,6 +41,22 @@ app.use(cors(corsOptions));
 
 // Middleware pour les requêtes préflight (OPTIONS)
 app.options('*', cors(corsOptions)); // Gérer les requêtes préflight
+
+async function testMongoConnection() {
+  try {
+    const client = new MongoClient(uri, { useUnifiedTopology: true });
+    await client.connect();
+    console.log("✅ Connexion MongoDB réussie !");
+    client.close();
+  } catch (err) {
+    console.error("❌ Erreur de connexion MongoDB :", err.message);
+  }
+}
+
+testMongoConnection();
+
+
+
 
 // Connexion à MongoDB
 mongoose
