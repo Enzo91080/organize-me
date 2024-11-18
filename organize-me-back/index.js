@@ -25,7 +25,7 @@ app.use(
   })
 );
 
-// Connexion à MongoDB
+// Test de connexion à MongoDB
 mongoose
   .connect(process.env.MONGO_URI, {
     useNewUrlParser: true,
@@ -34,6 +34,7 @@ mongoose
   .then(() => {
     console.log("✅ MongoDB Connected");
 
+    // Route de diagnostic pour MongoDB
     app.get("/mongodb-test", async (req, res) => {
       try {
         const dbStatus = await mongoose.connection.db.admin().ping();
@@ -48,10 +49,11 @@ mongoose
     console.error("❌ MongoDB Connection Error:", err);
     process.exit(1);
   });
+
 // Routes principales sans préfixe `/api`
 app.use("/", router);
 
-// Route de test
+// Route de test générale pour vérifier si le serveur est actif
 app.get("/connected", (req, res) => {
   res.status(200).send("Bienvenue sur l'API Organize Me!");
 });
