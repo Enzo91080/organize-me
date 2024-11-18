@@ -52,9 +52,10 @@ mongoose
 app.use('/', router);
 
 // Route principale pour tester l'API
-app.get("/", (req, res) => {
+app.get("/connected", (req, res) => {
   res.send("Bienvenue sur l'API Organize Me!");
 });
+
 
 // Démarrer le serveur
 const PORT = process.env.PORT || 3000;
