@@ -45,19 +45,27 @@ router.get("/me", async (req, res) => {
 // Connexion
 router.post("/login", async (req, res) => {
   const { email, password } = req.body;
+  console.log("Requête reçue avec email :", email);
+
   try {
     const user = await User.findOne({ email });
     if (!user || !(await user.comparePassword(password))) {
+      console.log("Utilisateur non trouvé ou mot de passe incorrect.");
       return res.status(401).json({ message: "Invalid credentials" });
     }
+
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
       expiresIn: "1h",
     });
-    res.json({ token, user, accessToken: token, refreshToken: token });
+
+    console.log("Utilisateur authentifié avec succès :", user.email);
+    res.json({ token, user });
   } catch (err) {
+    console.error("Erreur dans /auth/login :", err);
     res.status(500).json({ error: err.message });
   }
 });
+
 
 
 module.exports = router;
