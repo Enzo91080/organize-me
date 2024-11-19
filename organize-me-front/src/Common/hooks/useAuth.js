@@ -3,7 +3,10 @@ import AuthContext from "../contexts/AuthContext";
 import authApi from "../../Auth/services/auth.api";
 
 const useAuth = () => {
-  const { login: contextLogin, logout: contextLogout } = useContext(AuthContext);
+  const { 
+    login: contextLogin,
+    register: contextRegister,
+    logout: contextLogout } = useContext(AuthContext);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -26,7 +29,7 @@ const useAuth = () => {
     setError(null);
     try {
       const response = await authApi.register(userData);
-      contextLogin(response.user, response.token);
+      contextRegister(response.user, response.accessToken, response.refreshToken);
     } catch (err) {
       setError(err.message);
     } finally {
