@@ -1,6 +1,11 @@
+import { useContext } from "react";
 import { Link } from "react-router-dom";
+import AuthContext from "../Common/contexts/AuthContext";
+import { ROUTES } from "../Common/router";
 
 export default function LandingPage() {
+  const { isLoggedIn } = useContext(AuthContext);
+
   return (
     <div className="bg-gradient-to-b from-blue-100 to-white">
       {/* Hero Section */}
@@ -13,7 +18,7 @@ export default function LandingPage() {
             Planifiez vos tâches, suivez vos progrès et atteignez vos objectifs en toute simplicité.
           </p>
           <Link
-            to="/tasks"
+            to={isLoggedIn ? ROUTES.TASKS : ROUTES.AUTH.LOGIN}
             className="px-8 py-3 bg-blue-500 text-black rounded-lg shadow-lg hover:bg-blue-600 transition"
           >
             Démarrer maintenant
