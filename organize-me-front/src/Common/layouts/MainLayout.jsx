@@ -23,7 +23,7 @@ export default function MainLayout() {
   return (
     <div>
       {/* Header */}
-      <header className="bg-jb-primary text-white shadow-md">
+      <header className="bg-om-primary text-white shadow-md">
         <div className="container mx-auto flex items-center justify-between py-4 px-6">
           {/* Logo */}
           <Link to="/" className="text-xl font-bold hover:text-gray-300">
