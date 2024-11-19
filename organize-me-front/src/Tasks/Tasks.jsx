@@ -8,13 +8,13 @@ import {
   Popconfirm,
   message,
   Card,
-  Checkbox,
   Radio,
 } from "antd";
 import {
   EditOutlined,
   DeleteOutlined,
   SearchOutlined,
+  CheckOutlined,
 } from "@ant-design/icons";
 
 export default function Tasks({ tasks, completedTasks, fetchTasks }) {
@@ -24,7 +24,7 @@ export default function Tasks({ tasks, completedTasks, fetchTasks }) {
   const [viewMode, setViewMode] = useState(
     sessionStorage.getItem("viewMode") || "grid"
   );
-  const [expandedTasks, setExpandedTasks] = useState(new Set()); // Tâches avec description complète visible
+  const [expandedTasks, setExpandedTasks] = useState(new Set());
 
   useEffect(() => {
     setFilteredTasks(tasks);
@@ -59,24 +59,6 @@ export default function Tasks({ tasks, completedTasks, fetchTasks }) {
 
   const handleEditTask = (task) => {
     setEditingTask(task);
-  };
-
-  const handleUpdateTask = async (taskId, updatedTask) => {
-    if (!taskId) {
-      message.error("L'ID de la tâche est manquant.");
-      console.error("Task ID is missing.");
-      return;
-    }
-
-    try {
-      await taskApi.updateTask(taskId, updatedTask);
-      fetchTasks();
-      setEditingTask(null);
-      message.success("Tâche mise à jour avec succès!");
-    } catch (err) {
-      message.error("Erreur lors de la mise à jour de la tâche.");
-      console.error("Error updating task:", err);
-    }
   };
 
   const handleViewChange = (e) => {
@@ -139,14 +121,37 @@ export default function Tasks({ tasks, completedTasks, fetchTasks }) {
               hoverable
               style={{
                 width: "100%",
-                transition: "height 0.3s ease", // Animation douce pour ajuster la hauteur
+                position: "relative", // Permet de positionner l'élément bouton
               }}
               className={viewMode === "list" ? "shadow-none" : ""}
             >
+              {/* Bouton stylisé */}
+              <Popconfirm
+                title="Êtes-vous sûr de vouloir marquer cette tâche comme terminée ?"
+                onConfirm={() => toggleTaskCompletion(task)}
+                okText="Oui"
+                cancelText="Non"
+              >
+                <Button
+                  // onClick={() => toggleTaskCompletion(task)}
+                  type="primary"
+                  shape="circle"
+                  icon={<CheckOutlined />}
+                  size="large"
+                  style={{
+                    position: "absolute",
+                    top: "10px",
+                    right: "10px",
+                    backgroundColor: task.completed ? "green" : "gray",
+                    borderColor: task.completed ? "green" : "gray",
+                  }}
+                ></Button>
+              </Popconfirm>
+
               <Card.Meta
                 title={task.title}
                 description={
-                  <>
+                  <div>
                     <div
                       className={`text-gray-600 ${
                         expandedTasks.has(task._id) ||
@@ -168,7 +173,7 @@ export default function Tasks({ tasks, completedTasks, fetchTasks }) {
                     >
                       {task.description}
                     </div>
-                    {task.description.length > 100 && ( // Afficher "Voir plus" uniquement si le texte dépasse 100 caractères
+                    {task.description.length > 100 && (
                       <Button
                         type="link"
                         size="small"
@@ -180,16 +185,9 @@ export default function Tasks({ tasks, completedTasks, fetchTasks }) {
                           : "Voir plus"}
                       </Button>
                     )}
-                  </>
+                  </div>
                 }
               />
-              <Checkbox
-                checked={task.completed}
-                onChange={() => toggleTaskCompletion(task)}
-                className="mt-4"
-              >
-                {task.completed ? "Terminé" : "A compléter"}
-              </Checkbox>
               <div className="mt-4 flex justify-between">
                 <Button
                   type="primary"
@@ -233,128 +231,31 @@ export default function Tasks({ tasks, completedTasks, fetchTasks }) {
               hoverable
               style={{
                 width: "100%",
-                transition: "height 0.3s ease", // Animation douce pour ajuster la hauteur
+                position: "relative", // Permet de positionner l'élément bouton
               }}
               className={viewMode === "list" ? "shadow-none" : ""}
             >
-              <Card.Meta
-                title={task.title}
-                description={
-                  <>
-                    <div
-                      className={`text-gray-600 ${
-                        expandedTasks.has(task._id) ||
-                        task.description.length <= 100
-                          ? ""
-                          : "truncate"
-                      }`}
-                      style={{
-                        maxHeight:
-                          expandedTasks.has(task._id) ||
-                          task.description.length <= 100
-                            ? "none"
-                            : "4.5rem",
-                        overflow: expandedTasks.has(task._id)
-                          ? "visible"
-                          : "hidden",
-                        textOverflow: "ellipsis",
-                      }}
-                    >
-                      {task.description}
-                    </div>
-                    {task.description.length > 100 && ( // Afficher "Voir plus" uniquement si le texte dépasse 100 caractères
-                      <Button
-                        type="link"
-                        size="small"
-                        onClick={() => toggleExpandTask(task._id)}
-                        className="p-0 mt-2"
-                      >
-                        {expandedTasks.has(task._id)
-                          ? "Voir moins"
-                          : "Voir plus"}
-                      </Button>
-                    )}
-                  </>
-                }
+              {/* Bouton stylisé */}
+              <Button
+                onClick={() => toggleTaskCompletion(task)}
+                type="primary"
+                shape="circle"
+                icon={<CheckOutlined />}
+                size="large"
+                style={{
+                  position: "absolute",
+                  top: "10px",
+                  right: "10px",
+                  backgroundColor: task.completed ? "green" : "gray",
+                  borderColor: task.completed ? "green" : "gray",
+                }}
               />
-              <Checkbox
-                checked={task.completed}
-                onChange={() => toggleTaskCompletion(task)}
-                className="mt-4"
-              >
-                {task.completed ? "Terminé" : "A compléter"}
-              </Checkbox>
-              <div className="mt-4 flex justify-between">
-                <Button
-                  type="primary"
-                  icon={<EditOutlined />}
-                  onClick={() => handleEditTask(task)}
-                  style={{ marginRight: 8 }}
-                >
-                  Modifier
-                </Button>
-                <Popconfirm
-                  title="Êtes-vous sûr de vouloir supprimer cette tâche ?"
-                  onConfirm={() =>
-                    taskApi.deleteTask(task._id).then(fetchTasks)
-                  }
-                  okText="Oui"
-                  cancelText="Non"
-                >
-                  <Button type="danger" icon={<DeleteOutlined />} />
-                </Popconfirm>
-              </div>
+
+              <Card.Meta title={task.title} description={task.description} />
             </Card>
           </div>
         ))}
       </div>
-
-      {/* Modal pour modifier une tâche */}
-      {editingTask && (
-        <Modal
-          title="Modifier la tâche"
-          visible={editingTask !== null}
-          onCancel={() => setEditingTask(null)}
-          footer={null}
-        >
-          <Form
-            initialValues={{
-              title: editingTask.title,
-              description: editingTask.description,
-            }}
-            onFinish={(values) => handleUpdateTask(editingTask._id, values)}
-          >
-            <Form.Item
-              name="title"
-              label="Titre de la tâche"
-              rules={[{ required: true, message: "Le titre est requis!" }]}
-            >
-              <Input />
-            </Form.Item>
-            <Form.Item
-              name="description"
-              label="Description"
-              rules={[
-                { required: true, message: "La description est requise!" },
-              ]}
-            >
-              <Input.TextArea />
-            </Form.Item>
-            <Form.Item>
-              <Button type="primary" htmlType="submit">
-                Mettre à jour
-              </Button>
-              <Button
-                type="default"
-                onClick={() => setEditingTask(null)}
-                style={{ marginLeft: 10 }}
-              >
-                Annuler
-              </Button>
-            </Form.Item>
-          </Form>
-        </Modal>
-      )}
     </div>
   );
 }
